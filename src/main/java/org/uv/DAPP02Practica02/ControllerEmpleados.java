@@ -57,8 +57,10 @@ public class ControllerEmpleados {
     }
     
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Object input) {
-        return null;
+    public Empleado createEmpleado(@RequestBody Empleado nuevoEmpleado) {
+        // Guarda y escribe el empleado inmediatamente en la base de datos
+        Empleado empleadoGuardado = repositoryEmpleado.saveAndFlush(nuevoEmpleado);  
+        return empleadoGuardado;  // Devuelve el empleado recién creado
     }
     
     @DeleteMapping("/empleado/{id}")
