@@ -52,8 +52,24 @@ public class ControllerEmpleados {
     }
     
     @PutMapping("/empleado/{id}")
-    public Empleado put(@PathVariable Long id, @RequestBody Empleado empleadoActualizado) {
-        return null;
+    public Empleado updateEmpleado(@PathVariable Long id, @RequestBody Empleado empleadoActualizado) {
+        
+        Optional<Empleado> repEmpleado = repositoryEmpleado.findById(id);
+
+        if (repEmpleado.isPresent()) {
+            Empleado empleadoExistente = repEmpleado.get();
+
+            // Actualizar campos del empleado existente
+            empleadoExistente.setNombre(empleadoActualizado.getNombre());
+            empleadoExistente.setDireccion(empleadoActualizado.getDireccion());
+            empleadoExistente.setTelefono(empleadoActualizado.getTelefono());
+
+            Empleado empleadoGuardado = repositoryEmpleado.saveAndFlush(empleadoExistente);  
+            return empleadoGuardado;  // Devuelve el empleado actualizado
+        } else {
+            // Si no se encuentra el empleado, puede devolver null o lanzar un error HTTP
+            return null;  
+        }
     }
     
     @PostMapping
