@@ -52,7 +52,7 @@ public class ControllerEmpleados {
     }
     
     @PutMapping("/empleado/{id}")
-    public ResponseEntity<?> put(@PathVariable String id, @RequestBody Object input) {
+    public Empleado put(@PathVariable Long id, @RequestBody Empleado empleadoActualizado) {
         return null;
     }
     
@@ -62,8 +62,14 @@ public class ControllerEmpleados {
     }
     
     @DeleteMapping("/empleado/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
+    public Empleado delete(@PathVariable Long id) {
+    Optional<Empleado> repEmpleado = repositoryEmpleado.findById(id);
+    
+    if (repEmpleado.isPresent()) {
+        repositoryEmpleado.deleteById(id);
+        return repEmpleado.get();
+    }else{
         return null;
     }
-    
+}
 }
